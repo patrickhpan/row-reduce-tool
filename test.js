@@ -1,10 +1,23 @@
 const AugmentedForm = require('./AugmentedForm');
 const math = require('mathjs');
 
-let x = new AugmentedForm(3, 4, [
-    [1, -2, 1, 0],
-    [2, -2, -6, 8],
-    [-4, 5, 9, -9]
-])
+let x = new AugmentedForm(4, 5)
+x.parseInit(`
+1 0 -9 - 4
+0 1 3 0 -1
+0 0 0 1 -7
+0 0 0 0 1
+`)
 
-x.parse(`+ 1 0 -2; + 2 0 4; * 1 1/2; hist`)
+process.stdin.setEncoding('utf8');
+
+process.stdin.on('readable', () => {
+  var chunk = process.stdin.read();
+  if (chunk !== null) {
+      x.parse(chunk)
+  }
+});
+
+process.stdin.on('end', () => {
+  process.stdout.write('end');
+});
