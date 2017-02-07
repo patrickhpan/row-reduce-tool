@@ -133,14 +133,15 @@ class AugmentedForm {
             console.log(formatted);
         })
     }
-    parse(str) {
-        str = str.trim();
+    parse(strings) {
+        strings = strings.trim().split(/\n+|;/).map(x => x.trim()).filter(x => x.length > 0);
+        strings.forEach(str => {
         let swapMatch = str.match(/\s*s(?:wap)?\s+(\d+)\s+(\d+)\s*/);
         if (swapMatch) {
             this.swapRows(Number(swapMatch[1]), Number(swapMatch[2]))
             return;
         }
-        let multMatch = str.match(/\s*(?:[\*(?:m(?:ult)?)])\s+(\d+)\s+(-?\d+(?:(?:\/|\.)?\d+))\s*/);
+        let multMatch = str.match(/\s*(?:[\*(?:m(?:ult)?)])\s+(\d+)\s+(-?\d+(?:(?:\/|\.)?\d+)?)\s*/);
         if (multMatch) {
             this.multiplyRow(Number(multMatch[1]), math.fraction(multMatch[2]))
             return;
@@ -175,10 +176,11 @@ class AugmentedForm {
             return;
         }
         console.log("Invalid command.")
-    }
+})
+            }
     tex(matrix = this._matrix) {
         return `\\begin{bmatrix}
-            ${matrix.map(row => row.join('&').trim()).join('\\\\ \n')}
+            ${matrix.map(row => row.map(x => math.format(x)).join('&').trim().replace(/\/1(\D|$)/g,'$1')).join('\\\\ \n')}
         \\end{bmatrix}`
     }
     printTexHistory() {

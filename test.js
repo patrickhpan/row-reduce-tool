@@ -1,12 +1,11 @@
 const AugmentedForm = require('./AugmentedForm');
 const math = require('mathjs');
 
-let x = new AugmentedForm(4, 5)
+let x = new AugmentedForm(3,3)
 x.parseInit(`
-1 0 -9 - 4
-0 1 3 0 -1
-0 0 0 1 -7
-0 0 0 0 1
+27.6 30.2 162
+3100 6400 23610
+250 360 1623
 `)
 
 process.stdin.setEncoding('utf8');
